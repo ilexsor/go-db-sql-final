@@ -35,6 +35,9 @@ func TestAddGetDelete(t *testing.T) {
 	// prepare
 	db, err := database.Open()
 	require.NoError(t, err)
+
+	defer db.Close()
+
 	store := models.NewParcelStore(db)
 	parcel := getTestParcel()
 
@@ -70,6 +73,9 @@ func TestSetAddress(t *testing.T) {
 	// prepare
 	db, err := database.Open()
 	require.NoError(t, err)
+
+	defer db.Close()
+
 	store := models.NewParcelStore(db)
 	parcel := getTestParcel()
 
@@ -97,6 +103,9 @@ func TestSetStatus(t *testing.T) {
 	// prepare
 	db, err := database.Open()
 	require.NoError(t, err)
+
+	defer db.Close()
+
 	store := models.NewParcelStore(db)
 	parcel := getTestParcel()
 
@@ -123,6 +132,9 @@ func TestGetByClient(t *testing.T) {
 	// prepare
 	db, err := database.Open()
 	require.NoError(t, err)
+
+	defer db.Close()
+
 	store := models.NewParcelStore(db)
 
 	parcels := []models.Parcel{
@@ -167,9 +179,6 @@ func TestGetByClient(t *testing.T) {
 		// убедитесь, что значения полей полученных посылок заполнены верно
 		_, ok := parcelMap[parcel.Number]
 		require.Equal(t, true, ok)
-		require.Equal(t, parcelMap[parcel.Number].Client, parcel.Client)
-		require.Equal(t, parcelMap[parcel.Number].Status, parcel.Status)
-		require.Equal(t, parcelMap[parcel.Number].Address, parcel.Address)
-		require.Equal(t, parcelMap[parcel.Number].CreatedAt, parcel.CreatedAt)
+		require.Equal(t, parcelMap[parcel.Number], parcel)
 	}
 }

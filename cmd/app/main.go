@@ -12,7 +12,6 @@ import (
 func main() {
 	// настройте подключение к БД
 	db, openDbErr := database.Open()
-	defer db.Close()
 
 	if openDbErr != nil {
 		log.WithFields(log.Fields{
@@ -20,6 +19,8 @@ func main() {
 		}).Error()
 		return
 	}
+
+	defer db.Close()
 
 	// создайте объект ParcelStore функцией NewParcelStore
 	store := models.NewParcelStore(db)
